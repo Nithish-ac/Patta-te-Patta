@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 735f7b277befc4c3c8875d321ac2536e
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Titan One
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: b456a057b8c014c7dad5a5130293bfb0, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
