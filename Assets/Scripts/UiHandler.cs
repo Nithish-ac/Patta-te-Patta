@@ -9,6 +9,8 @@ using TMPro;
 
 public class UiHandler : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _mainMenu;
 
     // Ui TextMeshPro Components To Display Genarted Card Rank And Suit
     public TextMeshProUGUI cardNumberA;
@@ -85,8 +87,8 @@ public class UiHandler : MonoBehaviour
         turnBtnA.interactable = !turn;
         turnBtnB.interactable = turn;
 
-        btnImgA.color = turn ? defaultBtnColor : Color.yellow;
-        btnImgB.color = turn ? Color.yellow : defaultBtnColor;
+        //btnImgA.color = turn ? defaultBtnColor : Color.yellow;
+        //btnImgB.color = turn ? Color.yellow : defaultBtnColor;
     }
 
     //----------------- Method To Set Text To Represent Player Turn ----------------------
@@ -168,5 +170,8 @@ public class UiHandler : MonoBehaviour
     {
         Invoke(nameof(disableMessage), time);
     }
-
+    public void StartGame()
+    {
+        _mainMenu.SetActive(false);
+    }
 }
