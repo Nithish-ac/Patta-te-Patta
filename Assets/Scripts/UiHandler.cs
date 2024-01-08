@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
-
-//-------------- Script To Handle Ui Elements And Events ----------------
+using System;
+using UnityEngine.SceneManagement;
 
 public class UiHandler : MonoBehaviour
 {
+    public static UiHandler Instance;
     [SerializeField]
     private GameObject _mainMenu;
+    [SerializeField]
+    private GameObject _gameWon;
+    [SerializeField]
+    private GameObject _game;
 
-    // Ui TextMeshPro Components To Display Genarted Card Rank And Suit
     public TextMeshProUGUI cardNumberA;
     public TextMeshProUGUI cardNumberB;
 
     private GameLogic _gameLogic;
-    //[SerializeField] TurnHandler _turnRef; // Reference To TurnHandler Script
-    [SerializeField] TextMeshProUGUI winnerText; // winner Ui Text Component
-
-    // Ui Text Components To Display Player Cards Count 
+    [SerializeField] TextMeshProUGUI winnerText; 
 
     [SerializeField] TextMeshProUGUI _playerACountText;
     [SerializeField] TextMeshProUGUI _playerBCountText;
@@ -38,7 +38,7 @@ public class UiHandler : MonoBehaviour
     [SerializeField] TextMeshProUGUI placedCardsCountText;
 
     // Ui Text Component To Display Message On Card Matching
-    [SerializeField] TextMeshProUGUI _cardMatchMessage;
+    [SerializeField] GameObject _cardMatchMessage;
 
     // Refernce To Card Generator Script
     private CardGenerator _cardGen;
@@ -54,9 +54,23 @@ public class UiHandler : MonoBehaviour
     private Image btnImgA;
     private Image btnImgB;
 
-    // Default BG Color For Button
-    private Color defaultBtnColor;
+    [SerializeField]
+    private GameObject _playerCollectCards;
+    [SerializeField]
+    private GameObject _opponentCollectCards;
 
+    public static event Action DisenableCard;
+
+    private GameObject _cardAnimation;
+
+    internal bool _matchFound;
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
     private void Start()
     {
         _cardGen = FindObjectOfType<CardGenerator>();
@@ -64,7 +78,6 @@ public class UiHandler : MonoBehaviour
 
         btnImgA = turnBtnA.GetComponent<Image>();  // Getting Image Component Of Player A Turn Btn
         btnImgB = turnBtnB.GetComponent<Image>();   // Getting Image Component Of Player B Turn Btn
-        defaultBtnColor = new Color(221f, 220f, 201f, 255f); // Setting Default Btn Color
 
         setCountText();  // setting Card Count Text Of Both The Players
         setPlacedCardsCountText(); // setting Placed Cards Count Text 
@@ -86,9 +99,13 @@ public class UiHandler : MonoBehaviour
     {
         turnBtnA.interactable = !turn;
         turnBtnB.interactable = turn;
-
-        //btnImgA.color = turn ? defaultBtnColor : Color.yellow;
-        //btnImgB.color = turn ? Color.yellow : defaultBtnColor;
+        _matchFound = false;
+    }
+    public void btnTurnOff()
+    {
+        turnBtnA.interactable = false;
+        turnBtnB.interactable = false;
+        Debug.Log("btn off");
     }
 
     //----------------- Method To Set Text To Represent Player Turn ----------------------
@@ -104,6 +121,9 @@ public class UiHandler : MonoBehaviour
     {
 
         winnerText.text = $"Player {winner} Wins !";
+        Image img = winner.Equals(player.A) ? playerBCardImg : playerACardImg;
+        _gameWon.SetActive(true);
+        img.enabled = false;
         disableButtons();
         Time.timeScale = 0;
 
@@ -139,8 +159,8 @@ public class UiHandler : MonoBehaviour
 
     public void setCountText()
     {
-        _playerACountText.text = "Cards : " + _cardGen.playerACardsPack.Count;
-        _playerBCountText.text = "Cards : " + _cardGen.playerBCardsPack.Count;
+        _playerACountText.text =  _cardGen.playerACardsPack.Count.ToString();
+        _playerBCountText.text =  _cardGen.playerBCardsPack.Count.ToString();
     }
 
     //---------------- Method To Set Placed Cards Count Text ------------------
@@ -155,6 +175,9 @@ public class UiHandler : MonoBehaviour
     public void disableMessage()
     {
         _cardMatchMessage.gameObject.SetActive(false);
+        DisenableCard?.Invoke();
+        _playerCollectCards.SetActive(false);
+        _opponentCollectCards.SetActive(false);
     }
 
     //--------------- Method To Show Card Match Text On Rank Matching ----------------
@@ -172,6 +195,34 @@ public class UiHandler : MonoBehaviour
     }
     public void StartGame()
     {
+        _gameWon.SetActive(false);
         _mainMenu.SetActive(false);
+        _game.SetActive(true);
+        Time.timeScale = 1f;
+    }
+    public void Mainmenu()
+    {
+        _gameWon.SetActive(false);
+        _game.SetActive(false);
+        _mainMenu.SetActive(true);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void CollectCards(bool player)
+    {
+        Debug.Log("Collect Cards");
+        _cardAnimation = player ? _playerCollectCards : _opponentCollectCards;
+        Invoke(nameof(ActiveAnimation), 2f);
+    }
+    public void ActiveAnimation()
+    {
+        _cardAnimation.SetActive(true);
+    }
+    public void ExitApp()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#elif UNITY_ANDROID
+            Application.Quit();
+#endif
     }
 }
