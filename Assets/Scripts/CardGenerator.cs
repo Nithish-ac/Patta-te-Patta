@@ -2,19 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-//----------- Script To Generate Pack Of Cards And Handle Shuffling And Distribution Of Cards ---------------
-
 public class CardGenerator : MonoBehaviour
 {
 
-    public List<Card> cardsPack = new List<Card>();  // List Of Deck Of Cards
-    public Queue<Card> playerACardsPack = new Queue<Card>();  // Queue Of Pack Of Cards In Player A Hand
-    public Queue<Card> playerBCardsPack = new Queue<Card>();  // Queue Of Pack Of Cards In PLayer B Hand
+    public List<Card> cardsPack = new List<Card>();  
+    public Queue<Card> playerACardsPack = new Queue<Card>();  
+    public Queue<Card> playerBCardsPack = new Queue<Card>();  
 
-    public List<Card> placedCards = new List<Card>();  // List Of Placed Cards
+    public List<Card> placedCards = new List<Card>();  
 
-    public Sprite[] cardSprites;  // Array Of Sprites To Store Loaded Sprites
+    public Sprite[] cardSprites; 
 
     private void Awake()
     {
@@ -27,7 +24,6 @@ public class CardGenerator : MonoBehaviour
 
     #region Card Operations
 
-    //------------ Method to generate Pack of Cards -------------------
 
     void GenerateCards()
     {
@@ -43,7 +39,6 @@ public class CardGenerator : MonoBehaviour
     }
 
 
-    //---------------- Method To Shuffle Cards ------------------
 
     void shuffleCardsPack()
     {
@@ -58,7 +53,6 @@ public class CardGenerator : MonoBehaviour
         }
     }
 
-    //------------ Method To Distribute Cards ---------------
 
     void distributeCardsPack()
     {
@@ -76,11 +70,10 @@ public class CardGenerator : MonoBehaviour
 
     }
 
-    //------------ Method To Load Card Sprites ---------------
 
     void LoadSprites()
     {
-        cardSprites = Resources.LoadAll<Sprite>("Icons"); // Getting Sprites[] from Icons Folder in Resources
+        cardSprites = Resources.LoadAll<Sprite>("Icons"); 
     }
 
     #endregion
@@ -88,9 +81,7 @@ public class CardGenerator : MonoBehaviour
 
     #region  Some Debugging Methods
 
-    //-----------------------------Methods For Debugging-----------------------------------------
 
-    //------------- Method To Display Pack Of Cards For Debugging ---------------
 
     void displayCardsPack()
     {
@@ -98,7 +89,6 @@ public class CardGenerator : MonoBehaviour
             print(card);
     }
 
-    //------------- Method To Display Pack of Cards In Player A Hand For Debugging --------------
 
     void displayCardPackA()
     {
@@ -107,7 +97,6 @@ public class CardGenerator : MonoBehaviour
             print(card);
     }
 
-    //------------- Method To Display Pack of Cards In Player B Hand For Debugging --------------
 
     void displayCardPackB()
     {
@@ -117,7 +106,6 @@ public class CardGenerator : MonoBehaviour
     }
 
 
-    //---------------------------------------------------------------------------------------------------
 
     #endregion
 
@@ -127,7 +115,6 @@ public class CardGenerator : MonoBehaviour
 
 #region Card Implementation
 
-//-----------------Enumeration Representing Suit Of Card-------------------
 
 public enum Suit
 {
@@ -138,7 +125,6 @@ public enum Suit
 
 }
 
-//-----------------Enumeration Representing Rank Or Number Of Card---------------
 
 public enum Rank
 {
@@ -158,17 +144,14 @@ public enum Rank
 }
 
 
-//-----------------Class Representing A Card ---------------------
 
 public class Card
 {
-    // Instance Variables
 
     public Rank rank { get; }
     public Suit suit { get; }
     public Sprite cardSprite { get; }
 
-    // Constructor
 
     public Card(Rank rank, Suit suit, Sprite cardSprite)
     {
@@ -177,7 +160,6 @@ public class Card
         this.cardSprite = cardSprite;
     }
 
-    // Overriding To String() Method Of Object Class
 
     public override string ToString()
     {

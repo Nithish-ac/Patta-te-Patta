@@ -16,7 +16,6 @@ public class CardChanger : MonoBehaviour
     private Animator _animation;
     private readonly string _playerCard = "PlayerCard";
     private readonly string _opponentCard = "OpponentCard";
-    // Start is called before the first frame update
     void Start()
     {
         _gameLogic = FindObjectOfType<GameLogic>();
@@ -25,7 +24,6 @@ public class CardChanger : MonoBehaviour
     {
         UiHandler.DisenableCard += DeactivateCard;
     }
-    // Update is called once per frame
     void Update()
     {
         if (gameObject.transform.localScale.x > 0 && _placeCard)

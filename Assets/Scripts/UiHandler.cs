@@ -25,32 +25,24 @@ public class UiHandler : MonoBehaviour
     [SerializeField] TextMeshProUGUI _playerACountText;
     [SerializeField] TextMeshProUGUI _playerBCountText;
 
-    // Ui Buttons To Place Cards For Both Players
     [SerializeField] Button turnBtnA;
     [SerializeField] Button turnBtnB;
 
-    // Ui Image Components Representing Card Images Of Both Players
 
     [SerializeField] Image playerACardImg;
     [SerializeField] Image playerBCardImg;
 
-    // Ui Text Component To Display Placed Cards Count
     [SerializeField] TextMeshProUGUI placedCardsCountText;
 
-    // Ui Text Component To Display Message On Card Matching
     [SerializeField] GameObject _cardMatchMessage;
 
-    // Refernce To Card Generator Script
     private CardGenerator _cardGen;
 
-    // String Literals For Turn Text
     private const string turnA = "Player A Turn";
     private const string turnB = "Player B Turn";
 
-    // Ui TextMeshPro Component To Display Turn 
     [SerializeField] TextMeshProUGUI turnText;
 
-    // References To Image Component of Player Turn Buttons
     private Image btnImgA;
     private Image btnImgB;
 
@@ -76,14 +68,13 @@ public class UiHandler : MonoBehaviour
         _cardGen = FindObjectOfType<CardGenerator>();
         _gameLogic = FindObjectOfType<GameLogic>();
 
-        btnImgA = turnBtnA.GetComponent<Image>();  // Getting Image Component Of Player A Turn Btn
-        btnImgB = turnBtnB.GetComponent<Image>();   // Getting Image Component Of Player B Turn Btn
+        btnImgA = turnBtnA.GetComponent<Image>();  
+        btnImgB = turnBtnB.GetComponent<Image>();   
 
-        setCountText();  // setting Card Count Text Of Both The Players
-        setPlacedCardsCountText(); // setting Placed Cards Count Text 
+        setCountText();  
+        setPlacedCardsCountText(); 
     }
 
-    //----------- Method To Set Card Details On Ui --------------
 
     public void setCardDetails(player cardPlayer)
     {
@@ -93,7 +84,6 @@ public class UiHandler : MonoBehaviour
             cardNumberB.text = _gameLogic.cardB.ToString();
     }
 
-    //---------------- Method To Handle Turn Btns BG And Interactability ----------------------
 
     public void btnHandler(bool turn)
     {
@@ -105,17 +95,14 @@ public class UiHandler : MonoBehaviour
     {
         turnBtnA.interactable = false;
         turnBtnB.interactable = false;
-        Debug.Log("btn off");
     }
 
-    //----------------- Method To Set Text To Represent Player Turn ----------------------
 
     public void setTurnText(player playerTurn)
     {
         turnText.text = playerTurn.Equals(player.A) ? turnA : turnB;
     }
 
-    // --------- Method To Show Game End Messages ------------
 
     public void GameEndText(player winner)
     {
@@ -129,7 +116,6 @@ public class UiHandler : MonoBehaviour
 
     }
 
-    //------------- Methods To Disable Turn Buttons ------------------
 
     public void disableButtons()
     {
@@ -137,7 +123,6 @@ public class UiHandler : MonoBehaviour
         turnBtnB.gameObject.SetActive(false);
     }
 
-    //----------- Method To Set Card Sprite Image On Ui ------------
 
     public void setCardSprite(Card card, player pl)
     {
@@ -155,7 +140,6 @@ public class UiHandler : MonoBehaviour
 
     }
 
-    //------------- Method To Set Card Count Text Of Both The Players ---------------
 
     public void setCountText()
     {
@@ -163,14 +147,12 @@ public class UiHandler : MonoBehaviour
         _playerBCountText.text =  _cardGen.playerBCardsPack.Count.ToString();
     }
 
-    //---------------- Method To Set Placed Cards Count Text ------------------
 
     public void setPlacedCardsCountText()
     {
         placedCardsCountText.text = "Placed Cards : " + _cardGen.placedCards.Count;
     }
 
-    //------------ Method To Hide Card Match Message Text -----------------
 
     public void disableMessage()
     {
@@ -180,14 +162,12 @@ public class UiHandler : MonoBehaviour
         _opponentCollectCards.SetActive(false);
     }
 
-    //--------------- Method To Show Card Match Text On Rank Matching ----------------
 
     public void enableMessage()
     {
         _cardMatchMessage.gameObject.SetActive(true);
     }
 
-    //-------------- Method To Hide Cards Matched Text After Particular Period Of Time -------------
 
     public void callDisable(float time)
     {
@@ -209,7 +189,6 @@ public class UiHandler : MonoBehaviour
     }
     public void CollectCards(bool player)
     {
-        Debug.Log("Collect Cards");
         _cardAnimation = player ? _playerCollectCards : _opponentCollectCards;
         Invoke(nameof(ActiveAnimation), 2f);
     }
